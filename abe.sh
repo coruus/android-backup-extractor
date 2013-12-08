@@ -1,8 +1,10 @@
 #!/bin/sh
 
-JAVA=/usr/local/jdk1.7.0_04/bin/java
-BC=./lib/bcprov-jdk15on-148.jar
-CP=:bin:$BC
+java="$(which java)"
+"${java}" -version || java="$(/usr/libexec/java_home)/bin/java"
+test '-h bcprov.jar' || ./getbouncycastle.sh
+bouncycastle=$(find lib -iname "bcprov*jar" | head -1 | tr -d '\n')
+codepath=:bin:${bouncycastle}
 
-"$JAVA" -cp $CP org.nick.abe.Main $*
+"${java}" -cp ${codepath} org.nick.abe.Main $*
 
